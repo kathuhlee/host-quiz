@@ -4,6 +4,8 @@ import './App.css'
 function App() {
   const [answers, setAnswers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [hostResult, setHostResult] = useState('');
+
 
   const questions = [
     {id: 0, text: "What does your morning routine look like?", options: ["Sunrise swim", "Coffee, contemplation and chill", "Both" ]},
@@ -65,8 +67,8 @@ return (
 // results screen
     : currentQuestion === -1 ? (
       <div>
-        <h2>Your Host Style: Adventure Triathlete 🏊</h2>
-        <p>Energy score: High! You thrive with active guests.</p>
+        <h2>Your Host Style: {hostResult.charAt(0).toUpperCase() + hostResult.slice(1)} Host 🏠</h2>
+        <p>Perfect for {hostResult} travelers!</p>
         <p><strong>Listing tips:</strong> Oceanfront spot, bike rentals, Strava routes</p>
         <button onClick={() => {setCurrentQuestion(0); setAnswers([]);}}>
           Retake Quiz
