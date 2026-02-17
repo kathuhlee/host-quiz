@@ -3,7 +3,7 @@
 # Airbnb Host Style Quiz
 React quiz matching users to Airbnb host personalities—built for Connect Engineering Apprenticeship prep.
 
-**Live Demo**: [your-vercel-link]
+**Live Demo**: (https://quiz-phi-six-94.vercel.app/)
 
 **Tech**: React 19 + Vite + scoring logic (for/if loops)
 **Airbnb Connect Skills Demo**: State management, array iteration, conditional rendering
