@@ -7,27 +7,42 @@ function App() {
 
   const questions = [
     {id: 0, text: "What does your morning routine look like?", options: ["Sunrise swim", "Coffee, contemplation and chill", "Both" ]},
-  {id: 1, text: "How do you prefer guests check in?", options: ["Personal welcome with local tips", "Self check-in with smart lock", "Mix depending on guest"]},
-  {id: 2, text: "What's your home decor vibe?", options: ["Minimalist clean lines", "Cozy eclectic with personality", "Luxe unique touches"]},
-  {id: 3, text: "A guest leaves dishes in sink overnight?", options: ["Strict house rules enforced", "Flexible - treat like home", "Gentle reminder next morning"]},
-  {id: 4, text: "What guest type excites you most?", options: ["Adventure travelers (hikes/swims)", "Relaxers (Netflix & chill)", "Families with kids"]},
-  {id: 5, text: "Top amenity you'd provide?", options: ["Gym/pool access or bikes", "Fully stocked kitchen", "Curated local guidebook"]},
-  {id: 6, text: "Guest complains about WiFi?", options: ["Fix immediately, apologize profusely", "Troubleshoot together", "Offer discount if needed"]},
-  {id: 7, text: "Your hosting superpower?", options: ["Endurance (I never quit!)", "Making guests feel at home", "Creating magical spaces"]},
-  { id: 8, text: "Late check-out request?", options: ["Strict 11am policy", "Flexible for great guests", "Case-by-case basis"] },
-{ id: 9, text: "Your perfect guest review says?", options: ["'Super clean & organized!'", "'Felt like family!'", "'Most unique stay ever!'"] },
-{ id: 10, text: "Weekend hosting vibe?", options: ["Full service (local recs, coffee)", "Hands-off (keys + enjoy)", "Curated experiences (tours, swims)"] }
-
+    {id: 1, text: "How do you prefer guests check in?", options: ["Personal welcome with local tips", "Self check-in with smart lock", "Mix depending on guest"]},
+    {id: 2, text: "What's your home decor vibe?", options: ["Minimalist clean lines", "Cozy eclectic with personality", "Luxe unique touches"]},
+    {id: 3, text: "A guest leaves dishes in sink overnight?", options: ["Strict house rules enforced", "Flexible - treat like home", "Gentle reminder next morning"]},
+    {id: 4, text: "What guest type excites you most?", options: ["Adventure travelers (hikes/swims)", "Relaxers (Netflix & chill)", "Families with kids"]},
+    {id: 5, text: "Top amenity you'd provide?", options: ["Gym/pool access or bikes", "Fully stocked kitchen", "Curated local guidebook"]},
+    {id: 6, text: "Guest complains about WiFi?", options: ["Fix immediately, apologize profusely", "Troubleshoot together", "Offer discount if needed"]},
+    {id: 7, text: "Your hosting superpower?", options: ["Endurance (I never quit!)", "Making guests feel at home", "Creating magical spaces"]},
+    { id: 8, text: "Late check-out request?", options: ["Strict 11am policy", "Flexible for great guests", "Case-by-case basis"] },
+    { id: 9, text: "Your perfect guest review says?", options: ["'Super clean & organized!'", "'Felt like family!'", "'Most unique stay ever!'"] },
+    { id: 10, text: "Weekend hosting vibe?", options: ["Full service (local recs, coffee)", "Hands-off (keys + enjoy)", "Curated experiences (tours, swims)"] }
   ]
 
   const handleAnswer = (choice) => {
-    const newAnswers = [...answers, choice];
-    setAnswers(newAnswers)
+  const newAnswers = [...answers, choice];
+  setAnswers(newAnswers);
 
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setCurrentQuestion(-1);
+  if (currentQuestion < questions.length - 1) {
+    setCurrentQuestion(currentQuestion + 1);
+  } else {
+    // REAL SCORING with for loop (Airbnb LOVES this)
+    let energy = 0, social = 0, style = 0;
+    for(let i = 0; i < newAnswers.length; i++) {
+      if(newAnswers[i].includes('swim') || newAnswers[i].includes('Endurance')) energy++;
+      if(newAnswers[i].includes('welcome') || newAnswers[i].includes('Full service')) social++;
+      if(newAnswers[i].includes('Luxe') || newAnswers[i].includes('magical')) style++;
+    }
+
+    // Dynamic result based on highest score
+    const scores = { energy, social, style };
+    const hostType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+    // Store result for results page
+    setHostResult(hostType);
+    setCurrentQuestion(-1);
+  }
+};
 
     }
   };
