@@ -46,8 +46,8 @@ function App() {
   }
 };
 
-    }
-  };
+
+
 return (
   <div className="App">
     <h1>Which Airbnb host style are you?</h1>
@@ -80,5 +80,4 @@ return (
   </div>
 );
 }
-
 export default App;
