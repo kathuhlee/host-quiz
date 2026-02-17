@@ -53,15 +53,28 @@ return (
     <h1>Which Airbnb host style are you?</h1>
     {currentQuestion >= 0 && currentQuestion < questions.length ? (
       <div>
-        <div style={{marginBottom: '20px', fontSize: '18px'}}>
-          Question {currentQuestion + 1} of 11
+        <div style={{marginBottom: '20px'}}>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{width: `${(currentQuestion/10)*100}%`}}></div>
+          </div>
+          <small>Question {currentQuestion + 1} of 11</small>
         </div>
+
+
         <h2>{questions[currentQuestion].text}</h2>
         {questions[currentQuestion].options.map((option, index) => (
           <button key={index} onClick={() => handleAnswer(option)}>
             {option}
           </button>
         ))}
+        {currentQuestion > 0 && (
+      <button className="prev" onClick={() => setCurrentQuestion(currentQuestion - 1)}>
+        ← Previous
+      </button>
+)}
+
+        <p style={{color: '#666', fontSize: '14px'}}>Previous: {answers[currentQuestion-1] || 'None yet'}</p>
+
       </div>
     )
 // results screen

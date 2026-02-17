@@ -51,3 +51,58 @@ button {
   font-size: 16px; cursor: pointer;
 }
 button:hover { background: #E94E4E; }
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FF5A5F, #00A699);
+  transition: width 0.3s ease;
+}
+
+.App {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  font-family: -apple-system, Arial, sans-serif;
+}
+
+h1 { color: #FF5A5F; margin-bottom: 30px; }
+h2 { color: #484848; margin: 30px 0; }
+/* Previous button - small, gray, subtle */
+button.prev {
+  width: 120px !important;
+  background: #6B7280 !important; /* Gray */
+  font-size: 14px !important;
+  padding: 8px 16px !important;
+  margin-top: 20px !important;
+}
+
+button.prev:hover {
+  background: #4B5563 !important;
+}
+
+/* Keep main choice buttons big/red */
+button:not(.prev) {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+  padding: 15px;
+  background: #FF5A5F;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: #E94E4E; }
+button:disabled { background: #ccc; cursor: not-allowed; }
