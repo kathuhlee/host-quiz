@@ -1,14 +1,27 @@
-# React Quiz matching users to Airbnb host types
+# Airbnb Host Personality Quiz
 
-# Airbnb Host Style Quiz
-React quiz matching users to Airbnb host personalities—built for Connect Engineering Apprenticeship prep.
+## What it does
+11-question quiz analyzes your answers to classify you as **Energy Host**, **Social Host**, or **Style Host** with personalized Airbnb listing tips. Real scoring logic (for loops + keyword matching) determines your hosting superpower.
 
-**Live Demo**: (https://quiz-phi-six-94.vercel.app/)
+**Live Demo**: Try the quiz! (https://quiz-phi-six-94.vercel.app/)
 
-**Tech**: React 19 + Vite + scoring logic (for/if loops)
-**Airbnb Connect Skills Demo**: State management, array iteration, conditional rendering
+**Concepts Used**: State management, array iteration, conditional rendering
 
 To start program, do "run npm dev" in terminal.
+
+## Tech Stack
+Frontend: React + TypeScript + Vite + Tailwind CSS
+Scoring: Custom algorithm (11 Q → 3 scores → highest wins)
+State: useState + useReducer pattern for multi-step flow
+Styling: Progress bar, mobile-responsive buttons
+Deploy: Vercel
+
+## Architecture
+11-Question Form (React)
+↓ useState tracking answers
+Custom Scoring (for loop + keyword matching)
+↓ calculates energy/social/style scores
+Results Page → Personalized host type + tips
 
 ## Key Features
 - **11 unique questions** covering morning routine, guest types, amenities, conflict resolution
