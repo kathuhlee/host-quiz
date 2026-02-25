@@ -4,7 +4,9 @@
 11-question quiz analyzes your answers to classify you as **Energy Host**, **Social Host**, or **Style Host** with personalized Airbnb listing tips. Real scoring logic (for loops + keyword matching) determines your hosting superpower.
 
 **Live Demo**: Try the quiz! (https://quiz-phi-six-94.vercel.app/)
-
+![Image of the first question](./src/assets/first-screen.png "What type of host are you?")
+![Image showing the midway point of the quiz](./src/assets/mid-way.png "Halfway through!")
+![Image of Quiz Result](./src/assets/result.png "Final Result!")
 **Concepts Used**: State management, array iteration, conditional rendering
 
 To start program, do "run npm dev" in terminal.
