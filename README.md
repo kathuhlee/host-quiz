@@ -7,6 +7,7 @@
 ![Image of the first question](./src/assets/first-screen.png "What type of host are you?")
 ![Image showing the midway point of the quiz](./src/assets/mid-way.png "Halfway through!")
 ![Image of Quiz Result](./src/assets/result.png "Final Result!")
+
 **Concepts Used**: State management, array iteration, conditional rendering
 
 To start program, do "run npm dev" in terminal.
@@ -32,6 +33,7 @@ Results Page → Personalized host type + tips
 - **Previous button**: Navigate back to change answers
 - **Dynamic results**: Highest score wins (Energy vs Social vs Style Host)
 - **Retake quiz**: Reset state with one click
+- **Added localStorage persistence + leaderboard**: JSON results with full answer audit trail, real-time host type counters, cross-section data survives browser restart
 
 ## Key Decisions + Tradeoffs
 | Choice and the why

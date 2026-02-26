@@ -28,7 +28,7 @@ function App() {
   if (currentQuestion < questions.length - 1) {
     setCurrentQuestion(currentQuestion + 1);
   } else {
-    // REAL SCORING with for loop (Airbnb LOVES this)
+    // REAL SCORING with for loop
     let energy = 0, social = 0, style = 0;
     for(let i = 0; i < newAnswers.length; i++) {
       if(newAnswers[i].includes('swim') || newAnswers[i].includes('Endurance')) energy++;
@@ -40,9 +40,21 @@ function App() {
     const scores = { energy, social, style };
     const hostType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 
-    // Store result for results page
-    setHostResult(hostType);
-    setCurrentQuestion(-1);
+    // Save to localStorage + Leaderboard
+  const result = {
+    hostType,
+    scores,
+    timestamp: Date.now(),
+    answers: newAnswers  // Full audit trail
+  };
+
+  // Get existing results or []
+  const results = JSON.parse(localStorage.getItem('quizResults') || '[]');
+  results.unshift(result);  // Add to front (newest first)
+  localStorage.setItem('quizResults', JSON.stringify(results.slice(0, 100)));  // Keep top 100
+
+  setHostResult(hostType);
+  setCurrentQuestion(-1);
   }
 };
 
@@ -51,7 +63,9 @@ function App() {
 return (
   <div className="App">
     <h1>Which Airbnb host style are you?</h1>
+
     {currentQuestion >= 0 && currentQuestion < questions.length ? (
+      // QUESTION SCREEN (unchanged)
       <div>
         <div style={{marginBottom: '20px'}}>
           <div className="progress-bar">
@@ -59,8 +73,6 @@ return (
           </div>
           <small>Question {currentQuestion + 1} of 11</small>
         </div>
-
-
         <h2>{questions[currentQuestion].text}</h2>
         {questions[currentQuestion].options.map((option, index) => (
           <button key={index} onClick={() => handleAnswer(option)}>
@@ -68,17 +80,16 @@ return (
           </button>
         ))}
         {currentQuestion > 0 && (
-      <button className="prev" onClick={() => setCurrentQuestion(currentQuestion - 1)}>
-        ← Previous
-      </button>
-)}
-
-        <p style={{color: '#666', fontSize: '14px'}}>Previous: {answers[currentQuestion-1] || 'None yet'}</p>
-
+          <button className="prev" onClick={() => setCurrentQuestion(currentQuestion - 1)}>
+            ← Previous
+          </button>
+        )}
+        <p style={{color: '#666', fontSize: '14px'}}>
+          Previous: {answers[currentQuestion-1] || 'None yet'}
+        </p>
       </div>
-    )
-// results screen
-    : currentQuestion === -1 ? (
+    ) : currentQuestion === -1 ? (
+      // RESULTS SCREEN
       <div>
         <h2>Your Host Style: {hostResult.charAt(0).toUpperCase() + hostResult.slice(1)} Host 🏠</h2>
         <p>Perfect for {hostResult} travelers!</p>
@@ -86,11 +97,32 @@ return (
         <button onClick={() => {setCurrentQuestion(0); setAnswers([]);}}>
           Retake Quiz
         </button>
+        <button onClick={() => setCurrentQuestion(-2)}>View Leaderboard</button>
       </div>
-    )
-// default shouldn't show up, but just in case
-    : null}
+    ) : currentQuestion === -2 ? (
+      // 🆕 LEADERBOARD SCREEN (FIXED)
+      <div>
+        <h3>🏆 Top Hosts (local)</h3>
+        {(() => {
+          const results = JSON.parse(localStorage.getItem('quizResults') || '[]');
+          const counts = { energy: 0, social: 0, style: 0 };
+          results.forEach(r => counts[r.hostType]++);
+
+          return (
+            <div>
+              <p>Energy Hosts: <strong>{counts.energy}</strong></p>
+              <p>Social Hosts: <strong>{counts.social}</strong></p>
+              <p>Style Hosts: <strong>{counts.style}</strong></p>
+              <p>Total Quizzes: <strong>{results.length}</strong></p>
+              <button onClick={() => setCurrentQuestion(0)}>New Quiz</button>
+              <button onClick={() => localStorage.removeItem('quizResults')}>Clear Data</button>
+            </div>
+          );
+        })()}
+      </div>
+    ) : null}
   </div>
 );
+
 }
 export default App;
