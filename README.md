@@ -8,6 +8,7 @@
 ![Image of the first question](./src/assets/first-screen.png "What type of host are you?")
 ![Image showing the midway point of the quiz](./src/assets/mid-way.png "Halfway through!")
 ![Image of Quiz Result](./src/assets/result.png "Final Result!")
+![Image of Leaderboard](./src/assets/leaderboard.png "Leaderboard!")
 
 **Concepts Used**: State management, array iteration, conditional rendering
 
