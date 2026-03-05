@@ -39,11 +39,11 @@ Results Page → Personalized host type + tips
 
 ## Key Decisions + Tradeoffs
 Choice and the why
--- `useState` array | Track all 11 answers for final scoring | "Needed full answer history vs single-page apps"
--- For loop scoring | Simple, readable, no dependencies | "Like Splunk query logic at Apple—parse + count" |
--- Inline styles + Tailwind | Fast iteration | "Prioritized ship speed over CSS modules" |
--- No backend | Pure frontend MVP | "SQLite added later for anon result tracking" |
--- 3 host types | Clear winner vs complex matrix | "Focused on Airbnb's core host archetypes" |
+-- **`useState` array** | Track all 11 answers for final scoring | "Needed full answer history vs single-page apps"
+-- **For loop scoring** | Simple, readable, no dependencies | "Like Splunk query logic at Apple—parse + count" |
+-- **Inline styles + Tailwind** | Fast iteration | "Prioritized ship speed over CSS modules" |
+-- **No backend** | Pure frontend MVP | "SQLite added later for anon result tracking" |
+-- **3 host types** | Clear winner vs complex matrix | "Focused on Airbnb's core host archetypes" |
 
 ## Scoring Algorithm
 ```javascript

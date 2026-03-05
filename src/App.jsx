@@ -69,13 +69,13 @@ return (
       <div>
         <div style={{marginBottom: '20px'}}>
           <div className="progress-bar">
-            <div className="progress-fill" style={{width: `${(currentQuestion/10)*100}%`}}></div>
+            <div className="progress-fill" style={{width: `${(currentQuestion/questions.length)*100}%`}}></div>
           </div>
           <small>Question {currentQuestion + 1} of 11</small>
         </div>
         <h2>{questions[currentQuestion].text}</h2>
         {questions[currentQuestion].options.map((option, index) => (
-          <button key={index} onClick={() => handleAnswer(option)}>
+          <button key={option} onClick={() => handleAnswer(option)}>
             {option}
           </button>
         ))}
