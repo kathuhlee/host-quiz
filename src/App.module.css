@@ -8,6 +8,7 @@
   align-items: flex-start;
   justify-content: center;
   padding: 40px var(--space-md);
+  transition: background 0.3s ease;
 }
 
 .card {
@@ -17,6 +18,35 @@
   max-width: 560px;
   width: 100%;
   box-shadow: var(--shadow-card);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ============================================
+   DARK MODE TOGGLE
+   ============================================ */
+
+.topBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-md);
+}
+
+.darkToggle {
+  background: none;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+}
+
+.darkToggle:hover {
+  border-color: var(--color-text-muted);
+  color: var(--color-text-primary);
 }
 
 /* ============================================
@@ -29,8 +59,8 @@
 
 .badge {
   display: inline-block;
-  background: #fff1e6;
-  color: #c2410c;
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
   font-size: var(--text-xs);
   font-family: var(--font-mono);
   letter-spacing: 0.08em;
@@ -53,7 +83,7 @@
 
 .progressWrap {
   height: 6px;
-  background: #f0f0f0;
+  background: var(--color-border);
   border-radius: var(--radius-full);
   overflow: hidden;
   margin-bottom: var(--space-sm);
@@ -80,9 +110,24 @@
 .question {
   font-size: 20px;
   font-weight: 700;
-  color: #111;
+  color: var(--color-text-primary);
   margin-bottom: var(--space-lg);
   line-height: 1.4;
+}
+
+/* Wraps the question + options so they animate together as one unit */
+.questionBlock {
+  animation: slideInRight 0.25s ease forwards;
+}
+
+/* Applied instead when user hits the Back button */
+.questionBlockReverse {
+  animation: slideInLeft 0.25s ease forwards;
+}
+
+/* Result screen animates in differently — fade up feels more like a reveal */
+.resultBlock {
+  animation: fadeUp 0.35s ease forwards;
 }
 
 .optionList {
@@ -97,15 +142,15 @@
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   font-size: var(--text-base);
-  color: #222;
+  color: var(--color-text-primary);
   text-align: left;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.3s;
   font-family: inherit;
   width: 100%;
 }
 
 .optionBtn:hover {
-  background: #f0f9ff;
+  background: var(--color-bg);
   border-color: var(--color-accent-blue);
 }
 
@@ -171,7 +216,7 @@
 
 .resultDesc {
   font-size: var(--text-base);
-  color: #333;
+  color: var(--color-text-secondary);
   line-height: 1.7;
   margin-bottom: var(--space-lg);
 }
@@ -181,7 +226,7 @@
    ============================================ */
 
 .tipsBox {
-  background: #fafafa;
+  background: var(--color-bg);
   border-radius: var(--radius-lg);
   padding: 18px var(--space-lg);
   margin-bottom: var(--space-lg);
@@ -190,7 +235,7 @@
 .tipsTitle {
   font-size: 14px;
   font-weight: 700;
-  color: #111;
+  color: var(--color-text-primary);
   margin: 0 0 14px;
   font-family: var(--font-mono);
   letter-spacing: 0.05em;
@@ -213,7 +258,7 @@
 
 .tipText {
   font-size: 14px;
-  color: #333;
+  color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
@@ -230,7 +275,7 @@
 
 .apiLabel {
   font-size: var(--text-xs);
-  color: #999;
+  color: var(--color-text-muted);
   font-family: var(--font-mono);
   margin: 0 0 var(--space-xs);
   letter-spacing: 0.06em;
@@ -256,8 +301,8 @@
 
 .primaryBtn {
   flex: 1;
-  background: #111;
-  color: #fff;
+  background: var(--color-text-primary);
+  color: var(--color-surface);
   border-radius: var(--radius-md);
   padding: 13px var(--space-lg);
   font-size: 14px;
@@ -273,7 +318,7 @@
 .secondaryBtn {
   flex: 1;
   background: var(--color-surface);
-  color: #111;
+  color: var(--color-text-primary);
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 13px var(--space-lg);
@@ -284,7 +329,32 @@
 }
 
 .secondaryBtn:hover {
-  border-color: #aaa;
+  border-color: var(--color-text-muted);
+}
+
+/* Share button has a special "copied!" state */
+.shareBtn {
+  flex: 1;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 13px var(--space-lg);
+  font-size: 14px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+  transition: border-color 0.15s, background 0.2s, color 0.2s;
+}
+
+.shareBtn:hover {
+  border-color: var(--color-text-muted);
+}
+
+/* Green flash when copy succeeds */
+.shareBtnCopied {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
 }
 
 /* ============================================
@@ -295,6 +365,7 @@
   font-size: var(--text-lg);
   font-weight: 700;
   margin: 0 0 var(--space-xs);
+  color: var(--color-text-primary);
 }
 
 .lbSub {
@@ -324,12 +395,12 @@
   font-weight: 600;
   display: block;
   margin-bottom: 5px;
-  color: #222;
+  color: var(--color-text-primary);
 }
 
 .lbBarBg {
   height: 8px;
-  background: #f0f0f0;
+  background: var(--color-border);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -343,7 +414,7 @@
 .lbCount {
   font-size: 18px;
   font-weight: 700;
-  color: #111;
+  color: var(--color-text-primary);
   min-width: 24px;
   text-align: right;
 }

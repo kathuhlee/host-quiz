@@ -34,6 +34,10 @@
   --color-social: #f97316;
   --color-style:  #8b5cf6;
 
+  /* Badge — needs explicit dark variants since it uses brand orange */
+  --color-badge-bg:   #fff1e6;
+  --color-badge-text: #c2410c;
+
   /* Spacing */
   --space-xs:  4px;
   --space-sm:  8px;
@@ -63,6 +67,73 @@
 
   /* Shadows */
   --shadow-card: 0 4px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   When <html data-theme="dark"> is set by the
+   toggle button, these variables replace the
+   :root defaults everywhere in the app.
+   ============================================ */
+
+[data-theme="dark"] {
+  --color-bg:          #0f0f0f;
+  --color-bg-alt:      #1a1a2e;
+  --color-surface:     #1e1e1e;
+  --color-border:      #2e2e2e;
+  --color-border-dash: #3a3a3a;
+
+  --color-text-primary:   #f0f0f0;
+  --color-text-secondary: #aaaaaa;
+  --color-text-muted:     #666666;
+  --color-text-faint:     #444444;
+
+  --shadow-card: 0 4px 40px rgba(0, 0, 0, 0.4);
+
+  --color-badge-bg:   #431407;
+  --color-badge-text: #fb923c;
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   These are global because animations need to
+   be accessible from any component's CSS Module.
+   ============================================ */
+
+/* Question slide-in from right (going forward) */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Question slide-in from left (going backward) */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Result screen fade+rise */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ============================================

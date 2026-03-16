@@ -9,7 +9,7 @@ const QUESTIONS = [
   { id: 0,  text: "What does your morning routine look like?",    options: ["Sunrise swim", "Coffee, contemplation and chill", "Both"] },
   { id: 1,  text: "How do you prefer guests check in?",           options: ["Personal welcome with local tips", "Self check-in with smart lock", "Mix depending on guest"] },
   { id: 2,  text: "What's your home decor vibe?",                 options: ["Minimalist clean lines", "Cozy eclectic with personality", "Luxe unique touches"] },
-  { id: 3,  text: "A guest leaves dishes in the sink overnight?", options: ["Strict house rules enforced", "Flexible, treat it like home", "Gentle reminder next morning"] },
+  { id: 3,  text: "A guest leaves dishes in the sink overnight?", options: ["Strict house rules enforced", "Flexible — treat it like home", "Gentle reminder next morning"] },
   { id: 4,  text: "What guest type excites you most?",            options: ["Adventure travelers (hikes/swims)", "Relaxers (Netflix & chill)", "Families with kids"] },
   { id: 5,  text: "Top amenity you'd provide?",                   options: ["Gym/pool access or bikes", "Fully stocked kitchen", "Curated local guidebook"] },
   { id: 6,  text: "Guest complains about WiFi?",                  options: ["Fix immediately, apologize profusely", "Troubleshoot together", "Offer discount if needed"] },
@@ -30,7 +30,7 @@ const HOST_TYPES = {
       "Highlight nearby trails, surf spots, and bike paths in your listing",
       "Stock the garage with bikes, wetsuits, or gear guests can borrow",
       "Leave a handwritten 'adventure guide' with your personal recs",
-      "Use action photos in your listing, not just the bedroom",
+      "Use action photos in your listing — not just the bedroom",
     ],
     color: "#0ea5e9",
     bg: "#f0f9ff",
@@ -38,14 +38,14 @@ const HOST_TYPES = {
   social: {
     label: "The Warm Welcome Host",
     emoji: "🏡",
-    tagline: "Guests don't just stay, they feel at home.",
+    tagline: "Guests don't just stay — they feel at home.",
     description:
       "You're the host everyone messages to say thanks two weeks later. You remember names, anticipate needs, and make a studio apartment feel like a hug. Five-star reviews are basically your hobby.",
     tips: [
       "Lead your listing with personal touches ('I leave coffee ready for you')",
       "Build a house manual that feels like a letter from a friend",
       "Offer a quick local orientation at check-in",
-      "Ask guests what they're celebrating! Then make it special",
+      "Ask guests what they're celebrating — then make it special",
     ],
     color: "#f97316",
     bg: "#fff7ed",
@@ -58,7 +58,7 @@ const HOST_TYPES = {
       "You've definitely spent time on Pinterest boards and know what 'japandi' means. Guests book your place because of the vibe — and they Instagram it. Your listing photos do 80% of the selling.",
     tips: [
       "Invest in one statement piece that photographs beautifully",
-      "Keep decor cohesive, pick a palette and commit",
+      "Keep decor cohesive — pick a palette and commit",
       "Offer a small luxury (espresso machine, quality bath products)",
       "Hire a professional photographer — your design deserves it",
     ],
@@ -112,9 +112,30 @@ export default function App() {
   const [tip, setTip]               = useState(null);
   const [tipLoading, setTipLoading] = useState(false);
 
+  // Dark mode — toggling this sets data-theme="dark" on <html>
+  // which triggers the CSS variable overrides in index.css
+  const [darkMode, setDarkMode]     = useState(false);
+
+  // Tracks which direction the user is moving so we can
+  // slide questions in from the right (forward) or left (back)
+  const [direction, setDirection]   = useState("forward");
+
+  // Share button cycles: "idle" → "copied" → back to "idle" after 2s
+  const [shareState, setShareState] = useState("idle");
+
   const progress = (currentQ / QUESTIONS.length) * 100;
 
+  // Applies or removes data-theme="dark" on the root <html> element.
+  // Because CSS variables cascade from :root, this one attribute
+  // swap instantly re-themes every element on the page.
+  function toggleDark() {
+    const next = !darkMode;
+    setDarkMode(next);
+    document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
+  }
+
   async function handleAnswer(option) {
+    setDirection("forward");
     const newAnswers = [...answers, option];
     setAnswers(newAnswers);
 
@@ -137,8 +158,26 @@ export default function App() {
 
   function handlePrev() {
     if (currentQ > 0) {
+      setDirection("back");
       setAnswers(answers.slice(0, -1));
       setCurrentQ(currentQ - 1);
+    }
+  }
+
+  // Writes a pre-formatted message to the clipboard using the
+  // browser's Clipboard API (navigator.clipboard.writeText).
+  // Then sets shareState to "copied" and resets after 2 seconds
+  // so the button label reverts automatically.
+  async function handleShare() {
+    if (!host) return;
+    const text = `I took the Airbnb Host Quiz and I'm "${host.label}" — ${host.tagline} Try it: https://host-quiz.vercel.app/`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setShareState("copied");
+      setTimeout(() => setShareState("idle"), 2000);
+    } catch {
+      // Clipboard API can be blocked in some browsers — fail silently
+      setShareState("idle");
     }
   }
 
@@ -156,6 +195,13 @@ export default function App() {
     <div className={styles.app}>
       <div className={styles.card}>
 
+        {/* ── Top bar: dark mode toggle ───────────── */}
+        <div className={styles.topBar}>
+          <button className={styles.darkToggle} onClick={toggleDark}>
+            {darkMode ? "☀ light" : "◑ dark"}
+          </button>
+        </div>
+
         {/* ── Header ─────────────────────────────── */}
         <div className={styles.header}>
           <span className={styles.badge}>Airbnb Host Quiz</span>
@@ -172,18 +218,34 @@ export default function App() {
               Question {currentQ + 1} of {QUESTIONS.length}
             </p>
 
-            <h2 className={styles.question}>{QUESTIONS[currentQ].text}</h2>
+            {/*
+              key={currentQ} is the trick that makes animations work.
+              When key changes, React unmounts the old div and mounts
+              a fresh one — which replays the CSS animation from scratch.
+              Without key, React reuses the same DOM node and the
+              animation never re-triggers.
+            */}
+            <div
+              key={currentQ}
+              className={
+                direction === "back"
+                  ? styles.questionBlockReverse
+                  : styles.questionBlock
+              }
+            >
+              <h2 className={styles.question}>{QUESTIONS[currentQ].text}</h2>
 
-            <div className={styles.optionList}>
-              {QUESTIONS[currentQ].options.map((opt) => (
-                <button
-                  key={opt}
-                  className={styles.optionBtn}
-                  onClick={() => handleAnswer(opt)}
-                >
-                  {opt}
-                </button>
-              ))}
+              <div className={styles.optionList}>
+                {QUESTIONS[currentQ].options.map((opt) => (
+                  <button
+                    key={opt}
+                    className={styles.optionBtn}
+                    onClick={() => handleAnswer(opt)}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className={styles.navRow}>
@@ -203,7 +265,7 @@ export default function App() {
 
         {/* ── Result screen ──────────────────────── */}
         {screen === "result" && host && (
-          <div>
+          <div className={styles.resultBlock}>
             <div
               className={styles.resultHero}
               style={{ background: host.bg, borderColor: host.color + "33" }}
@@ -221,10 +283,7 @@ export default function App() {
               <h3 className={styles.tipsTitle}>Listing tips for you</h3>
               {host.tips.map((t, i) => (
                 <div key={i} className={styles.tipRow}>
-                  <span
-                    className={styles.tipDot}
-                    style={{ background: host.color }}
-                  />
+                  <span className={styles.tipDot} style={{ background: host.color }} />
                   <span className={styles.tipText}>{t}</span>
                 </div>
               ))}
@@ -250,6 +309,17 @@ export default function App() {
                 onClick={() => setScreen("leaderboard")}
               >
                 See leaderboard
+              </button>
+              {/*
+                shareBtn + shareBtnCopied are combined with a template
+                literal so both classes apply at once when copied.
+                The green flash is pure CSS — no JS timeout affects styles.
+              */}
+              <button
+                className={`${styles.shareBtn} ${shareState === "copied" ? styles.shareBtnCopied : ""}`}
+                onClick={handleShare}
+              >
+                {shareState === "copied" ? "✓ copied!" : "⤴ share"}
               </button>
             </div>
           </div>
