@@ -96,6 +96,7 @@ function scoreAnswers(answers) {
 - **External API** — fetches a random tip from `adviceslip.com` on quiz completion, with loading state and graceful error handling
 - **In-memory leaderboard** — tracks host type distribution across retakes within the session (replaces `localStorage` which fails in most deployment environments)
 - **Retake** — resets all state with one click
+- **Share** - can share the results by texting a friend and linking them to the quiz
 
 ---
 
