@@ -4,7 +4,7 @@ A React quiz app that analyzes 11 questions to classify you as one of three Airb
 
 **[→ Live Demo](https://host-quiz.vercel.app/)**
 
-<video src="./assets/your-video.mov" controls width="600"></video>
+<video src="./assets/quiz-demo.mov" controls width="600"></video>
 
 ![First question screen](./src/assets/first-screen.png)
 ![75% through, dark mode](./src/assets/three-quarters-dark.png)
